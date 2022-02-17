@@ -33,6 +33,29 @@ palindrome l
     | otherwise             = False
 
 -- Define the function concat :: [[a]] −> [a] which flattens a list of lists: concat [[1, 2], [3], [ ], [4, 5]] evaluates to [1, 2, 3, 4, 5].
-concat :: [[a]] -> [a]
-concat [] = error "empty list"
-concat h:t = concat h:[t]
+concat' :: [[a]] -> [a]
+concat' [] = [] 
+concat' ([]:xss) = concat' xss
+concat' ((x:xs):xss) = x:concat' (xs:xss)
+
+-- Define a function remSuccessiveDuplicates which removes succesive repeated elements from a list: [1, 2, 2, 3, 2, 4] is mapped to [1, 2, 3, 2, 4].
+remSuccessiveDuplicates :: (Eq a ) => [a] ->[a]
+remSuccessiveDuplicates l
+    | l == [] = []
+    | length l == 1 = l
+    | head l == head (tail l) = (head l):remSuccessiveDuplicates (tail(tail l))
+    | otherwise =  (head l):remSuccessiveDuplicates (tail l)
+-- get tail, and then get head of tail. if head and head of tail are equal, do f h:f tail of tail
+--else f h:tail
+
+-- Define a function that groups successive duplicate elements in a list into sublists: [1, 2, 2, 3, 2, 4] is mapped to [[1], [2, 2], [3], [2], [4]].
+groupSuccessiveDuplicates :: (Eq a) => [a] -> [[a]] 
+groupSuccessiveDuplicates l 
+    | l == [] = []
+    | length l == 1 = [l]
+    | head l == head (tail l) = [head l,head (tail l)]:groupSuccessiveDuplicates (tail (tail l))
+    | otherwise =  [head l]:groupSuccessiveDuplicates (tail l)
+-- takes list and creats sublist for each item [1,2,3] -> [[1],[2],[3]]
+listtosublist :: [a] -> [[a]]
+listtosublist [] = []
+listtosublist (h:t) = [h]:listtosublist t
